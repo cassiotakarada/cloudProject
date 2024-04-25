@@ -25,11 +25,13 @@ jobs:
         run: |
           cd server
           npm install
+          npm run start
 
       - name: Install dependencies for frontend
         run: |
           cd client
           npm install
+          npm run dev
 
       - name: Zip artifact for deployment
         run: zip release.zip ./* -r
