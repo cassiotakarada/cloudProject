@@ -1,6 +1,3 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
-
 name: Build and deploy Node.js app to Azure Web App - petzClinic
 
 on:
@@ -21,17 +18,17 @@ jobs:
         with:
           node-version: '18.x'
 
-      - name: Install dependencies for backend
+      - name: Build backend
         run: |
           cd server
           npm install
-          npm run start
+          npm run build  # Assuming you have a build script. If not, just 'npm install' is fine.
 
-      - name: Install dependencies for frontend
+      - name: Build frontend
         run: |
           cd client
           npm install
-          npm run dev
+          npm run build  # This should be a production build command
 
       - name: Zip artifact for deployment
         run: zip release.zip ./* -r
@@ -67,6 +64,17 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_53C16070B0614F3DB0FA763E17364525 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_864D28424B3F4C5DBCF1B038B4956630 }}
 
+      - name: Set Azure App Service settings
+        uses: azure/appservice-settings@v1
+        with:
+          app-name: 'petzClinic'
+          slot-name: 'Production'
+          app-settings-json: >
+            [
+              {"name": "MONGO_URI", "value": "${{ secrets.MONGO_URI }}", "slotSetting": false},
+              {"name": "SECRET", "value": "${{ secrets.SECRET }}", "slotSetting": false}
+            ]
+
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
@@ -74,4 +82,3 @@ jobs:
           app-name: 'petzClinic'
           slot-name: 'Production'
           package: .
-          
