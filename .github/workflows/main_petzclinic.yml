@@ -22,13 +22,13 @@ jobs:
         run: |
           cd server
           npm install
-          npm run build  # Assuming you have a build script. If not, just 'npm install' is fine.
+          npm run start  # Assuming you have a build script. If not, just 'npm install' is fine.
 
       - name: Build frontend
         run: |
           cd client
           npm install
-          npm run build  # This should be a production build command
+          npm run dev  # This should be a production build command
 
       - name: Zip artifact for deployment
         run: zip release.zip ./* -r
