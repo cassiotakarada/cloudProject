@@ -4,11 +4,15 @@ const mongoURI = process.env.MONGO_URI;
 
 export default (): void => {
   if (mongoURI) {
+    console.log(`Connecting to MongoDB at URI: ${mongoURI}`);
     mongoose
-      .connect(mongoURI)
-      .then(() => console.log("connected to mongoDB"))
-      .catch((e) => console.log(`failed to connect to mongoDB, error: ${e}`));
+      .connect(mongoURI, {
+        connectTimeoutMS: 30000,
+        socketTimeoutMS: 45000,
+      })
+      .then(() => console.log("Connected to MongoDB successfully"))
+      .catch(e => console.error(`Failed to connect to MongoDB, error: ${e}`));
   } else {
-    console.log("failed to connect to mongoDB");
+    console.log("MongoDB URI is undefined");
   }
 };
