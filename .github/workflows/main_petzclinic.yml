@@ -21,13 +21,13 @@ jobs:
         with:
           node-version: '18.x'
 
-      - name: Install dependencies for back
+      - name: Install dependency for back
         run: |
           cd server
           npm install
           npm run start
 
-      - name: Install dependencies for front
+      - name: Install dependency for front
         run: |
           cd client
           npm install
